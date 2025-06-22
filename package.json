@@ -4,7 +4,9 @@
   "description": "Proyecto de conversor de coordenadas astronomicas usando una arquitectura modelo vista controlador (mvc)",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "sass": "sass src/sass/styles.sass:src/public/css/styles.css",
+    "sass-watch": "sass --watch src/sass/styles.sass:src/public/css/styles.css",
+    "start": "concurrently \"npm run sass-watch\" \"nodemon src/server/server.js\""
   },
   "repository": {
     "type": "git",
@@ -20,5 +22,12 @@
   "bugs": {
     "url": "https://github.com/AishaGreyrat/CoordAstronomicas/issues"
   },
-  "homepage": "https://github.com/AishaGreyrat/CoordAstronomicas#readme"
+  "homepage": "https://github.com/AishaGreyrat/CoordAstronomicas#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.0",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10",
+    "pug": "^3.0.3"
+  }
 }

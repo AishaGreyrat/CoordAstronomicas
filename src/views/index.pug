@@ -1,0 +1,107 @@
+extends layout
+
+block content
+    .container
+        header
+            h1= title
+            p.subtitle= subtitle
+        
+        main
+            section.card
+                h2.card-title Sistema de Origen
+                
+                .form-group
+                    label(for="source-system") Sistema de Coordenadas de Origen
+                    select#source-system
+                        option(value="equatorial") Ecuatoriales (RA/DEC)
+                        option(value="ecliptic") Eclípticas (Long/Lat)
+                        option(value="horizontal") Horizontales (Azimut/Altitud)
+                        option(value="galactic") Galácticas (Long/Lat)
+                
+                #coordinates-input
+                    .form-group
+                        label(for="ra") Ascensión Recta (RA)
+                        input#ra(type="text", placeholder="Ej: 12h 34m 56.78s")
+                    
+                    .form-group
+                        label(for="dec") Declinación (DEC)
+                        input#dec(type="text", placeholder="Ej: +45° 30' 15.5&quot;")
+                
+                .optional-section
+                    h3.optional-title Parámetros Opcionales
+                    
+                    .form-group
+                        label(for="epoch") Época de Referencia
+                        select#epoch
+                            option(value="J2000.0") J2000.0
+                            option(value="B1950.0") B1950.0
+                            option(value="actual") Época Actual
+                    
+                    .form-group
+                        label(for="location") Ubicación del Observador (opcional)
+                        input#location(type="text", placeholder="Ej: Mérida, Yucatán")
+                    
+                    .form-group
+                        label(for="datetime") Fecha y Hora de Observación
+                        input#datetime(type="datetime-local")
+                
+                button#convert-btn.pulse Convertir Coordenadas
+            
+            section#results-section.card.results-container
+                h2.card-title Resultados de Conversión
+                
+                .results-grid
+                    .result-card.fade-in
+                        h3.result-title Sistema Ecuatorial
+                        .coord-row
+                            span.coord-label Ascensión Recta (RA):
+                            span.coord-value#result-ra -
+                        .coord-row
+                            span.coord-label Declinación (DEC):
+                            span.coord-value#result-dec -
+                        .coord-row
+                            span.coord-label Época:
+                            span.coord-value#result-epoch J2000.0
+                    
+                    .result-card.fade-in
+                        h3.result-title Sistema Eclíptico
+                        .coord-row
+                            span.coord-label Longitud Eclíptica:
+                            span.coord-value#result-ecliptic-lon -
+                        .coord-row
+                            span.coord-label Latitud Eclíptica:
+                            span.coord-value#result-ecliptic-lat -
+                    
+                    .result-card.fade-in
+                        h3.result-title Sistema Horizontal
+                        .coord-row
+                            span.coord-label Azimut:
+                            span.coord-value#result-azimuth -
+                        .coord-row
+                            span.coord-label Altitud:
+                            span.coord-value#result-altitude -
+                        .coord-row
+                            span.coord-label Ubicación:
+                            span.coord-value#result-location -
+                    
+                    .result-card.fade-in
+                        h3.result-title Sistema Galáctico
+                        .coord-row
+                            span.coord-label Longitud Galáctica:
+                            span.coord-value#result-galactic-lon -
+                        .coord-row
+                            span.coord-label Latitud Galáctica:
+                            span.coord-value#result-galactic-lat -
+                
+                .map-container
+                    .map-placeholder
+                        h3 Visualización del Objeto Celeste
+                        p (Mapa estelar interactivo - Funcionalidad opcional)
+                        p Aquí se mostraría la posición del objeto en diferentes sistemas de coordenadas
+                
+                .optional-section
+                    h3.optional-title Funciones Adicionales
+                    .button-group
+                        button#export-btn(style="background: #4caf50;") Exportar Resultados
+                        button#save-btn(style="background: #534bae;") Guardar Conversión
+                        button#batch-btn(style="background: #ff9800;") Conversión por Lotes
