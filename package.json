@@ -1,0 +1,24 @@
+{
+  "name": "coordenadas-astronomicas",
+  "version": "1.0.0",
+  "description": "Proyecto de conversor de coordenadas astronomicas usando una arquitectura modelo vista controlador (mvc)",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AishaGreyrat/CoordAstronomicas.git"
+  },
+  "keywords": [
+    "pug",
+    "sass",
+    "express"
+  ],
+  "author": "Brito Argaez Jose Raul",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AishaGreyrat/CoordAstronomicas/issues"
+  },
+  "homepage": "https://github.com/AishaGreyrat/CoordAstronomicas#readme"
+}
