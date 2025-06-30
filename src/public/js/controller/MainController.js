@@ -73,7 +73,7 @@ export default class MainController {
         
         // Validaciones específicas para coordenadas horizontales
         if (system === 'horizontal') {
-            if (!data.location || !data.datetime) {
+            if (!data.datetime) {
                 return false;
             }
         }
