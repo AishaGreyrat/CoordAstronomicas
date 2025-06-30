@@ -93,11 +93,8 @@ block content
                             span.coord-label Latitud Galáctica:
                             span.coord-value#result-galactic-lat -
                 
-                .map-container
-                    .map-placeholder
-                        h3 Visualización del Objeto Celeste
-                        p (Mapa estelar interactivo - Funcionalidad opcional)
-                        p Aquí se mostraría la posición del objeto en diferentes sistemas de coordenadas
+                .map-container(style="position: relative;")
+                    //- Este contenedor será utilizado por Three.js
                 
                 .optional-section
                     h3.optional-title Funciones Adicionales

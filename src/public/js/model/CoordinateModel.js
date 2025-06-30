@@ -1,9 +1,10 @@
 /*
-   Modelo para conversión de coordenadas astronómicas
-   Maneja los cálculos y transformaciones matemáticas
+ * Modelo para conversión de coordenadas astronómicas
+ * Maneja los cálculos y transformaciones matemáticas
  */
 export default class CoordinateModel {
     constructor() {
+        // Constantes astronómicas
         this.EPSILON = 23.439281; // Oblicuidad de la eclíptica (grados)
         this.GALACTIC_POLE_RA = 192.85948; // Ascensión recta del polo galáctico norte (grados)
         this.GALACTIC_POLE_DEC = 27.12825; // Declinación del polo galáctico norte (grados)
@@ -11,28 +12,28 @@ export default class CoordinateModel {
     }
 
     /*
-      Convierte grados a radianes
-      @param {number} degrees - Ángulo en grados
-      @returns {number} Ángulo en radianes
-    */
+     * Convierte grados a radianes
+     * @param {number} degrees - Ángulo en grados
+     * @returns {number} Ángulo en radianes
+     */
     toRadians(degrees) {
         return degrees * (Math.PI / 180);
     }
 
     /*
-      Convierte radianes a grados
-      @param {number} radians - Ángulo en radianes
-      @returns {number} Ángulo en grados
-    */
+     * Convierte radianes a grados
+     * @param {number} radians - Ángulo en radianes
+     * @returns {number} Ángulo en grados
+     */
     toDegrees(radians) {
         return radians * (180 / Math.PI);
     }
 
     /*
-      Convierte tiempo sexagesimal a grados decimales
-      @param {string} time - Tiempo en formato HH:MM:SS
-      @returns {number} Grados decimales
-    */
+     * Convierte tiempo sexagesimal a grados decimales
+     * @param {string} time - Tiempo en formato HH:MM:SS
+     * @returns {number} Grados decimales
+     */
     timeToDegrees(time) {
         const parts = time.split(':');
         const hours = parseFloat(parts[0]) || 0;
@@ -42,10 +43,10 @@ export default class CoordinateModel {
     }
 
     /*
-      Convierte grados decimales a tiempo sexagesimal
-      @param {number} degrees - Grados decimales
-      @returns {string} Tiempo en formato HH:MM:SS
-    */
+     * Convierte grados decimales a tiempo sexagesimal
+     * @param {number} degrees - Grados decimales
+     * @returns {string} Tiempo en formato HH:MM:SS
+     */
     degreesToTime(degrees) {
         const hours = Math.floor(degrees / 15);
         const remainder = (degrees / 15 - hours) * 60;
@@ -55,11 +56,11 @@ export default class CoordinateModel {
     }
 
     /*
-      Convierte coordenadas ecuatoriales a eclípticas
-      @param {number} ra - Ascensión recta (grados)
-      @param {number} dec - Declinación (grados)
-      @returns {Object} {lon: longitud eclíptica, lat: latitud eclíptica}
-    */
+     * Convierte coordenadas ecuatoriales a eclípticas
+     * @param {number} ra - Ascensión recta (grados)
+     * @param {number} dec - Declinación (grados)
+     * @returns {Object} {lon: longitud eclíptica, lat: latitud eclíptica}
+     */
     equatorialToEcliptic(ra, dec) {
         const raRad = this.toRadians(ra);
         const decRad = this.toRadians(dec);
@@ -82,11 +83,11 @@ export default class CoordinateModel {
     }
 
     /*
-      Convierte coordenadas ecuatoriales a galácticas
-      @param {number} ra - Ascensión recta (grados)
-      @param {number} dec - Declinación (grados)
-      @returns {Object} {lon: longitud galáctica, lat: latitud galáctica}
-    */
+     * Convierte coordenadas ecuatoriales a galácticas
+     * @param {number} ra - Ascensión recta (grados)
+     * @param {number} dec - Declinación (grados)
+     * @returns {Object} {lon: longitud galáctica, lat: latitud galáctica}
+     */
     equatorialToGalactic(ra, dec) {
         const raRad = this.toRadians(ra);
         const decRad = this.toRadians(dec);
@@ -112,14 +113,14 @@ export default class CoordinateModel {
     }
 
     /*
-      Convierte coordenadas ecuatoriales a horizontales
-      @param {number} ra - Ascensión recta (grados)
-      @param {number} dec - Declinación (grados)
-      @param {number} lat - Latitud del observador (grados)
-      @param {number} lon - Longitud del observador (grados)
-      @param {Date} date - Fecha y hora de observación
-      @returns {Object} {azimuth: azimut, altitude: altitud}
-    */
+     * Convierte coordenadas ecuatoriales a horizontales
+     * @param {number} ra - Ascensión recta (grados)
+     * @param {number} dec - Declinación (grados)
+     * @param {number} lat - Latitud del observador (grados)
+     * @param {number} lon - Longitud del observador (grados)
+     * @param {Date} date - Fecha y hora de observación
+     * @returns {Object} {azimuth: azimut, altitude: altitud}
+     */
     equatorialToHorizontal(ra, dec, lat, lon, date) {
         // Convertir a radianes
         const raRad = this.toRadians(ra);
@@ -151,11 +152,11 @@ export default class CoordinateModel {
     }
 
     /*
-      Calcula la hora sidérea local
-      @param {Date} date - Fecha y hora
-      @param {number} lon - Longitud del observador (grados)
-      @returns {number} Hora sidérea local (grados)
-    */
+     * Calcula la hora sidérea local
+     * @param {Date} date - Fecha y hora
+     * @param {number} lon - Longitud del observador (grados)
+     * @returns {number} Hora sidérea local (grados)
+     */
     localSiderealTime(date, lon) {
         // Días desde J2000.0
         const jd = this.julianDate(date);
@@ -173,21 +174,21 @@ export default class CoordinateModel {
     }
 
     /*
-      Calcula la fecha juliana
-      @param {Date} date - Fecha y hora
-      @returns {number} Fecha juliana
-    */
+     * Calcula la fecha juliana
+     * @param {Date} date - Fecha y hora
+     * @returns {number} Fecha juliana
+     */
     julianDate(date) {
         const time = date.getTime();
         return 2440587.5 + (time / 86400000);
     }
 
     /*
-      Convierte coordenadas entre sistemas
-      @param {string} sourceSystem - Sistema de origen
-      @param {Object} data - Datos de entrada
-      @returns {Object} Resultados de la conversión
-    */
+     * Convierte coordenadas entre sistemas
+     * @param {string} sourceSystem - Sistema de origen
+     * @param {Object} data - Datos de entrada
+     * @returns {Object} Resultados de la conversión
+     */
     convertCoordinates(sourceSystem, data) {
         // Convertir todos los valores a grados decimales
         const ra = data.ra.includes(':') ? this.timeToDegrees(data.ra) : parseFloat(data.ra);
@@ -246,4 +247,58 @@ export default class CoordinateModel {
             }
         };
     }
+
+    /*
+     * Obtiene las coordenadas cartesianas para visualización 3D
+     * @param {number} ra - Ascensión recta (grados)
+     * @param {number} dec - Declinación (grados)
+     * @param {number} distance - Distancia (unidades arbitrarias)
+     * @returns {Object} {x, y, z} coordenadas cartesianas
+     */
+    getCartesianCoordinates(ra, dec, distance = 100) {
+        const raRad = this.toRadians(ra);
+        const decRad = this.toRadians(dec);
+        
+        // Convertir coordenadas esféricas a cartesianas
+        const x = distance * Math.cos(decRad) * Math.cos(raRad);
+        const y = distance * Math.cos(decRad) * Math.sin(raRad);
+        const z = distance * Math.sin(decRad);
+        
+        return { x, y, z };
+    }
+
+    /*
+     * Obtiene datos para la visualización
+     * @param {Object} results - Resultados de la conversión
+     * @returns {Object} Datos para el visualizador 3D
+     */
+    getVisualizationData(results) {
+    // Convertir RA a grados decimales
+    const ra = this.timeToDegrees(results.equatorial.ra);
+    const dec = parseFloat(results.equatorial.dec);
+    
+    return {
+        equatorial: {
+            ra,
+            dec,
+            cartesian: this.getCartesianCoordinates(ra, dec)
+        },
+        ecliptic: {
+            lon: parseFloat(results.ecliptic.lon),
+            lat: parseFloat(results.ecliptic.lat),
+            cartesian: this.getCartesianCoordinates(
+                parseFloat(results.ecliptic.lon), 
+                parseFloat(results.ecliptic.lat)
+            )
+        },
+        galactic: {
+            lon: parseFloat(results.galactic.lon),
+            lat: parseFloat(results.galactic.lat),
+            cartesian: this.getCartesianCoordinates(
+                parseFloat(results.galactic.lon), 
+                parseFloat(results.galactic.lat)
+            )
+        }
+    };
+}
 }

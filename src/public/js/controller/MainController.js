@@ -7,7 +7,7 @@ import CoordinateView from '../view/CoordinateView.js';
 export default class MainController {
     constructor() {
         this.model = new CoordinateModel();
-        this.view = new CoordinateView();
+        this.view = new CoordinateView(this);
         
         this.init();
     }

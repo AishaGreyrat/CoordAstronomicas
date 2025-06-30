@@ -29,5 +29,8 @@
     "express": "^5.1.0",
     "nodemon": "^3.1.10",
     "pug": "^3.0.3"
+  },
+  "dependencies": {
+    "three": "^0.177.0"
   }
 }

@@ -1,9 +1,9 @@
-/*
-  Vista para la interfaz de usuario del conversor
-  Maneja la presentación y la interacción con el usuario
-*/
+/**
+ * Vista para la interfaz de usuario del conversor
+ */
 export default class CoordinateView {
-    constructor() {
+    constructor(controller) {
+        this.controller = controller;
         this.resultsSection = document.getElementById('results-section');
         this.convertBtn = document.getElementById('convert-btn');
         this.sourceSystem = document.getElementById('source-system');
@@ -21,12 +21,10 @@ export default class CoordinateView {
             galacticLon: document.getElementById('result-galactic-lon'),
             galacticLat: document.getElementById('result-galactic-lat')
         };
+        
+        this.skyView = null;
     }
     
-    /*
-      Vincula el evento de conversión
-      @param {function} handler - Función a ejecutar al hacer clic en el botón
-    */
     bindConvert(handler) {
         this.convertBtn.addEventListener('click', () => {
             const sourceSystem = this.sourceSystem.value;
@@ -41,12 +39,7 @@ export default class CoordinateView {
         });
     }
     
-    /*
-      Muestra los resultados de la conversión
-      @param {Object} results - Resultados de la conversión
-    */
     showResults(results) {
-        // Actualizar la vista con los resultados
         this.resultElements.ra.textContent = results.equatorial.ra || '-';
         this.resultElements.dec.textContent = results.equatorial.dec || '-';
         this.resultElements.epoch.textContent = results.equatorial.epoch || '-';
@@ -58,16 +51,12 @@ export default class CoordinateView {
         this.resultElements.galacticLon.textContent = results.galactic.lon || '-';
         this.resultElements.galacticLat.textContent = results.galactic.lat || '-';
         
-        // Mostrar la sección de resultados
         this.resultsSection.style.display = 'block';
-        
-        // Reiniciar animaciones
         this.resetAnimations();
+        
+        this.updateSkyView(results);
     }
     
-    /*
-      Reinicia las animaciones de los elementos de resultados
-    */
     resetAnimations() {
         const cards = document.querySelectorAll('.fade-in');
         cards.forEach(card => {
@@ -78,9 +67,6 @@ export default class CoordinateView {
         });
     }
     
-    /*
-      Actualiza los campos de entrada según el sistema seleccionado
-    */
     updateInputFields() {
         const system = this.sourceSystem.value;
         const coordinatesDiv = document.getElementById('coordinates-input');
@@ -101,10 +87,6 @@ export default class CoordinateView {
         }
     }
     
-    /*
-      Genera los campos de entrada para coordenadas ecuatoriales
-      @returns {string} HTML de los campos de entrada
-    */
     getEquatorialInputs() {
         return `
             <div class="form-group">
@@ -119,10 +101,6 @@ export default class CoordinateView {
         `;
     }
     
-    /*
-      Genera los campos de entrada para coordenadas eclípticas
-      @returns {string} HTML de los campos de entrada
-    */
     getEclipticInputs() {
         return `
             <div class="form-group">
@@ -137,10 +115,6 @@ export default class CoordinateView {
         `;
     }
     
-    /*
-      Genera los campos de entrada para coordenadas horizontales
-      @returns {string} HTML de los campos de entrada
-    */
     getHorizontalInputs() {
         return `
             <div class="form-group">
@@ -155,10 +129,6 @@ export default class CoordinateView {
         `;
     }
     
-    /*
-      Genera los campos de entrada para coordenadas galácticas
-      @returns {string} HTML de los campos de entrada
-    */
     getGalacticInputs() {
         return `
             <div class="form-group">
@@ -173,11 +143,63 @@ export default class CoordinateView {
         `;
     }
     
-    /*
-      Muestra un mensaje de error
-      @param {string} message - Mensaje de error
-    */
     showError(message) {
         alert(`Error: ${message}`);
+    }
+    
+    updateSkyView(results) {
+    try {
+        if (!this.skyView) {
+            const mapContainer = document.querySelector('.map-container');
+            if (!mapContainer) return;
+            
+            this.skyView = new SkyView(mapContainer);
+        }
+        
+        // Usar el método del controlador
+        const visData = this.controller.model.getVisualizationData(results);
+        this.skyView.updateObjectPosition(visData, 'equatorial');
+        this.addCoordinateSystemControls(visData);
+    } catch (error) {
+        console.error('Error en visualización 3D:', error);
+        const mapContainer = document.querySelector('.map-container');
+        if (mapContainer) {
+            mapContainer.innerHTML = `<div class="error">${error.message}</div>`;
+        }
+    }
+}
+    
+    addCoordinateSystemControls(visData) {
+        let controlsContainer = document.querySelector('.map-controls');
+        if (controlsContainer) controlsContainer.remove();
+        
+        controlsContainer = document.createElement('div');
+        controlsContainer.className = 'map-controls';
+        
+        const systems = [
+            { id: 'equatorial', label: 'Ecuatorial', color: '#4444ff' },
+            { id: 'ecliptic', label: 'Eclíptico', color: '#ff4444' },
+            { id: 'galactic', label: 'Galáctico', color: '#44ff44' }
+        ];
+        
+        systems.forEach(system => {
+            const button = document.createElement('button');
+            button.textContent = system.label;
+            button.style.background = system.color;
+            button.style.color = 'white';
+            button.style.border = 'none';
+            button.style.padding = '5px 10px';
+            button.style.borderRadius = '4px';
+            button.style.cursor = 'pointer';
+            button.style.margin = '0 5px';
+            
+            button.addEventListener('click', () => {
+                this.skyView.updateObjectPosition(visData, system.id);
+            });
+            
+            controlsContainer.appendChild(button);
+        });
+        
+        document.querySelector('.map-container').appendChild(controlsContainer);
     }
 }

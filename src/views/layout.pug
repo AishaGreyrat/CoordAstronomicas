@@ -5,11 +5,13 @@ head
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     title= titulo
     link(rel="stylesheet", href="/css/styles.css")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js")
+    script(src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js")
 body
     block content 
-
+    
     footer.footer
         p Proyecto para la Evaluación Extraordinaria - Aplicaciones de BD
         p Ingeniería en Gestión de Tecnologías de la Información - Universidad Mesoamericana de San Agustín
     
-    script(src="/js/app.js", type="module")
+    script(type="module" src="/js/app.js")
